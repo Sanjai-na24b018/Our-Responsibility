@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /issues/{issueId} {
+      // Anyone can read
+      allow read: if true;
+      
+      // Require valid fields for creation
+      allow create: if
+        request.resource.data.keys().hasAll(['category', 'severity', 'description', 'lat', 'lng', 'timestamp', 'status', 'sessionId']) &&
+        request.resource.data.category is string &&
+        request.resource.data.severity is string &&
+        request.resource.data.description is string &&
+        request.resource.data.lat is number &&
+        request.resource.data.lng is number &&
+        request.resource.data.timestamp is number &&
+        request.resource.data.status is string &&
+        request.resource.data.sessionId is string &&
+        request.resource.data.description.size() <= 1000;
+        
+      // Restrict updates to specific fields
+      allow update: if
+        request.resource.data.diff(resource.data).affectedKeys().hasAny(['upvotes', 'citizenCount', 'photos', 'severity', 'impactScoreBreakdown', 'status', 'escalationLetter', 'afterPhoto']);
+    }
+  }
+}

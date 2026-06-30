@@ -1,0 +1,6 @@
+{
+  "name": "Our Responsibility",
+  "description": "An AI-powered civic engagement platform for reporting and resolving local infrastructural issues.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
